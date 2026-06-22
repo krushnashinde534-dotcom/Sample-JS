@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Animated Age Calculator</title>
+
+<style>
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+        font-family:Arial, sans-serif;
+    }
+
+    body{
+        height:100vh;
+        overflow:hidden;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        background:linear-gradient(to bottom,#1e3c72,#2a5298);
+        position:relative;
+    }
+
+    /* Clouds */
+    .cloud{
+        position:absolute;
+        width:200px;
+        height:60px;
+        background:white;
+        border-radius:50px;
+        opacity:0.8;
+        animation:moveClouds 20s linear infinite;
+    }
+
+    .cloud::before,
+    .cloud::after{
+        content:'';
+        position:absolute;
+        background:white;
+        border-radius:50%;
+    }
+
+    .cloud::before{
+        width:80px;
+        height:80px;
+        top:-40px;
+        left:20px;
+    }
+
+    .cloud::after{
+        width:100px;
+        height:100px;
+        top:-50px;
+        right:15px;
+    }
+
+    .cloud1{
+        top:50px;
+        left:-250px;
+        animation-duration:25s;
+    }
+
+    .cloud2{
+        top:150px;
+        left:-300px;
+        animation-duration:35s;
+    }
+
+    @keyframes moveClouds{
+        from{
+            transform:translateX(0);
+        }
+        to{
+            transform:translateX(1600px);
+        }
+    }
+
+    /* Rain */
+    .rain{
+        position:absolute;
+        width:2px;
+        height:20px;
+        background:rgba(255,255,255,0.6);
+        animation:rainFall linear infinite;
+    }
+
+    @keyframes rainFall{
+        from{
+            transform:translateY(-100px);
+        }
+        to{
+            transform:translateY(110vh);
+        }
+    }
+
+    /* Calculator Box */
+    .container{
+        position:relative;
+        z-index:10;
+        width:350px;
+        padding:30px;
+        background:rgba(255,255,255,0.15);
+        border-radius:20px;
+        backdrop-filter:blur(10px);
+        text-align:center;
+        color:white;
+        box-shadow:0 0 25px rgba(0,0,0,0.3);
+        animation:floatBox 3s ease-in-out infinite;
+    }
+
+    @keyframes floatBox{
+        0%{ transform:translateY(0px); }
+        50%{ transform:translateY(-10px); }
+        100%{ transform:translateY(0px); }
+    }
+
+    h1{
+        margin-bottom:20px;
+        font-size:30px;
+        text-shadow:0 0 10px cyan;
+    }
+
+    input{
+        width:100%;
+        padding:12px;
+        margin:10px 0;
+        border:none;
+        border-radius:10px;
+        outline:none;
+        font-size:16px;
+    }
+
+    button{
+        width:100%;
+        padding:12px;
+        margin-top:15px;
+        border:none;
+        border-radius:10px;
+        background:cyan;
+        color:black;
+        font-size:18px;
+        font-weight:bold;
+        cursor:pointer;
+        transition:0.3s;
+    }
+
+    button:hover{
+        background:white;
+        transform:scale(1.05);
+    }
+
+    #result{
+        margin-top:20px;
+        font-size:22px;
+        font-weight:bold;
+        color:yellow;
+        text-shadow:0 0 10px yellow;
+    }
+</style>
+</head>
+
+<body>
+
+<!-- Clouds -->
+<div class="cloud cloud1"></div>
+<div class="cloud cloud2"></div>
+
+<!-- Rain Drops -->
+<script>
+for(let i=0;i<120;i++){
+    let rain=document.createElement('div');
+    rain.classList.add('rain');
+
+    rain.style.left=Math.random()*window.innerWidth+'px';
+    rain.style.animationDuration=(Math.random()*1+0.5)+'s';
+    rain.style.opacity=Math.random();
+
+    document.body.appendChild(rain);
+}
+</script>
+
+<!-- Age Calculator -->
+<div class="container">
+    <h1>Age Calculator</h1>
+
+    <input type="date" id="dob">
+
+    <button onclick="calculateAge()">Calculate Age</button>
+
+    <div id="result"></div>
+</div>
+
+<script>
+function calculateAge(){
+
+    let dob=document.getElementById("dob").value;
+
+    if(dob===""){
+        alert("Please select your birth date!");
+        return;
+    }
+
+    let birthDate=new Date(dob);
+    let today=new Date();
+
+    let years=today.getFullYear()-birthDate.getFullYear();
+    let months=today.getMonth()-birthDate.getMonth();
+    let days=today.getDate()-birthDate.getDate();
+
+    if(days<0){
+        months--;
+        days+=30;
+    }
+
+    if(months<0){
+        years--;
+        months+=12;
+    }
+
+    document.getElementById("result").innerHTML=
+    `${years} Years<br>${months} Months<br>${days} Days`;
+}
+</script>
+
+</body>
+</html>
