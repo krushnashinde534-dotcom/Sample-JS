@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Animated Digital Clock</title>
+
+<style>
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+    }
+
+    body{
+        height:100vh;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        overflow:hidden;
+        background:linear-gradient(135deg,#000428,#004e92);
+        font-family:Arial, sans-serif;
+    }
+
+    /* Animated Background Circles */
+    .circle{
+        position:absolute;
+        border-radius:50%;
+        background:rgba(255,255,255,0.1);
+        animation:float 8s infinite linear;
+    }
+
+    .circle:nth-child(1){
+        width:200px;
+        height:200px;
+        top:10%;
+        left:15%;
+    }
+
+    .circle:nth-child(2){
+        width:300px;
+        height:300px;
+        bottom:10%;
+        right:10%;
+        animation-duration:12s;
+    }
+
+    .circle:nth-child(3){
+        width:150px;
+        height:150px;
+        bottom:20%;
+        left:20%;
+        animation-duration:10s;
+    }
+
+    @keyframes float{
+        0%{
+            transform:translateY(0px) rotate(0deg);
+        }
+        50%{
+            transform:translateY(-30px) rotate(180deg);
+        }
+        100%{
+            transform:translateY(0px) rotate(360deg);
+        }
+    }
+
+    /* Clock Box */
+    .clock-container{
+        position:relative;
+        padding:40px 70px;
+        border-radius:25px;
+        background:rgba(255,255,255,0.08);
+        backdrop-filter:blur(10px);
+        box-shadow:
+            0 0 20px cyan,
+            0 0 40px blue,
+            0 0 80px cyan;
+        text-align:center;
+        animation:glow 2s infinite alternate;
+    }
+
+    @keyframes glow{
+        from{
+            box-shadow:
+            0 0 20px cyan,
+            0 0 40px blue,
+            0 0 80px cyan;
+        }
+        to{
+            box-shadow:
+            0 0 30px #00ffff,
+            0 0 60px #00ffff,
+            0 0 100px #00ffff;
+        }
+    }
+
+    #clock{
+        font-size:70px;
+        font-weight:bold;
+        color:white;
+        letter-spacing:5px;
+        text-shadow:
+            0 0 10px cyan,
+            0 0 20px cyan,
+            0 0 40px cyan;
+    }
+
+    #date{
+        margin-top:15px;
+        font-size:25px;
+        color:#ddd;
+        letter-spacing:2px;
+    }
+
+    .title{
+        position:absolute;
+        top:-50px;
+        width:100%;
+        text-align:center;
+        font-size:30px;
+        color:white;
+        text-shadow:0 0 10px cyan;
+        animation:blink 1.5s infinite;
+    }
+
+    @keyframes blink{
+        50%{
+            opacity:0.5;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="circle"></div>
+<div class="circle"></div>
+<div class="circle"></div>
+
+<div class="clock-container">
+    <div class="title">DIGITAL CLOCK</div>
+    <div id="clock">00:00:00</div>
+    <div id="date">Loading Date...</div>
+</div>
+
+<script>
+function updateClock() {
+
+    const now = new Date();
+
+    let h = now.getHours();
+    let m = now.getMinutes();
+    let s = now.getSeconds();
+
+    h = h < 10 ? "0" + h : h;
+    m = m < 10 ? "0" + m : m;
+    s = s < 10 ? "0" + s : s;
+
+    const time = `${h}:${m}:${s}`;
+
+    document.getElementById("clock").innerHTML = time;
+
+    // Date
+    const options = {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    };
+
+    document.getElementById("date").innerHTML =
+        now.toLocaleDateString('en-US', options);
+}
+
+setInterval(updateClock, 1000);
+
+updateClock();
+</script>
+
+</body>
+</html>
